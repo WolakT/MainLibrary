@@ -48,7 +48,7 @@ public class Library {
         return null;
     }
 
-    public void borrowBook(String title) {
+    public Book borrowBook(String title) {
         //check if is in library
         //assign object book
         //check if is borrowed
@@ -57,12 +57,15 @@ public class Library {
             book = findBook(title);
             if (!isBorrowed(title)) {
                 borrowedBooks.add(book);
+                return book;
             } else {
                 System.out.println("This book has been borrowed");
             }
         } else {
             System.out.println("No such book in library");
+
         }
+        return null;
     }
 
     public void removeBook(Book book) {
@@ -70,18 +73,21 @@ public class Library {
     }
 
     public void removeBook(String title) {
-        for (Book books : allBooks) {
-            if (books.getTitle().equals(title)) {
-                allBooks.remove(books);
-                break;
-            }
+        Book toRemove;
+        if (isInLibrary(title)) {
+            toRemove = findBook(title);
+            allBooks.remove(toRemove);
+        } else {
+            System.out.println("No such book in library");
         }
     }
 
-    public void returnBook(String title) {
-        Book returnedBook;
-        returnedBook = findBook(title);
-        borrowedBooks.remove(returnedBook);
+    public boolean returnBook(Book book) {
+        if (isInLibrary(book.getTitle())) {
+            borrowedBooks.remove(book);
+            return true;
+        }
+        return false;
     }
 
 }
